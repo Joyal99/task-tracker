@@ -62,6 +62,26 @@ def update_task(task_id, new_description):
             return
         
     print(f"Task {task_id} not found.")
+    
+def mark_task(task_id, status):
+    """Updating the statu of a task(todo, in-progress, done)."""
+    valid_statuses = ["todo", "in-progress", "done"]
+    
+    if status not in valid_statuses:
+        print(f"Invalid status. Choose from: {', '.join(valid_statuses)}")
+        return
+    
+    tasks = load_tasks()
+    
+    for task in tasks:
+        if task["id"] == task_id:
+            task["status"] = status
+            task["updated_at"] = datetime.now().isoformat()
+            save_tasks(tasks)
+            print(f"Task {task_id} marked as {status}.")
+            return
+        
+    print(f"Task {task_id} not found.")
 
 def main():
     initialize_tasks_file()
@@ -89,6 +109,24 @@ def main():
                 task_id = int(sys.argv[2])
                 new_description = " ".join(sys.argv[3:])
                 update_task(task_id, new_description)
+            except ValueError:
+                print("Invalid task ID. Please provide a valid task ID.")
+    elif command == "mark-in-progress":
+        if len(sys.argv) < 3:
+            print("Usage:python task_tracker.py mark-in-progress <task_id>")
+        else:
+            try:
+                task_id = int(sys.argv[2])
+                mark_task(task_id, "in-progress")
+            except ValueError:
+                print("Invalid task ID. Please provide a valid task ID.") 
+    elif command == "mark-done":
+        if len(sys.argv) < 3:
+                print("Usage: python task_tracker.py mark-done <task_id>")
+        else:
+            try:
+                task_id = int(sys.argv[2])
+                mark_task(task_id, "done")
             except ValueError:
                 print("Invalid task ID. Please provide a valid task ID.")
     else:
