@@ -48,6 +48,20 @@ def list_tasks(status=None):
     for task in tasks:
         print(f"[{task['id']}] {task['description']} - {task['status']} "
               f"(Created: {task['created_at']}, Updated: {task.get('updated_at', 'N/A')})")
+        
+def update_task(task_id, new_description):
+    """Updating the description of a task."""
+    tasks= load_tasks()
+    
+    for task in tasks:
+        if task["id"] == task_id:
+            task["description"] = new_description
+            task["updated_at"] = datetime.now().isoformat()
+            save_tasks(tasks)
+            print(f"Task {task_id} updated successfully.")
+            return
+        
+    print(f"Task {task_id} not found.")
 
 def main():
     initialize_tasks_file()
@@ -67,6 +81,16 @@ def main():
             list_tasks(status)
         else:
             list_tasks()
+    elif command == "update":
+        if(len(sys.argv) < 4):
+            print("Usage: python task_tracker.py update <task_id> \"New description\"")
+        else:
+            try:
+                task_id = int(sys.argv[2])
+                new_description = " ".join(sys.argv[3:])
+                update_task(task_id, new_description)
+            except ValueError:
+                print("Invalid task ID. Please provide a valid task ID.")
     else:
         print("Unknown command")
 

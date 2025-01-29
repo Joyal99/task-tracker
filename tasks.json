@@ -4,5 +4,12 @@
         "description": "Buy Groceries",
         "status": "todo",
         "created_at": "2025-01-28T22:35:28.112196"
+    },
+    {
+        "id": 2,
+        "description": "Buy groceries and cook dinner",
+        "status": "todo",
+        "created_at": "2025-01-28T22:56:33.667386",
+        "updated_at": "2025-01-28T22:57:06.791597"
     }
 ]
