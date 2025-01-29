@@ -1,1 +1,8 @@
-[]
+[
+    {
+        "id": 1,
+        "description": "Buy Groceries",
+        "status": "todo",
+        "created_at": "2025-01-28T22:35:28.112196"
+    }
+]
