@@ -61,7 +61,7 @@ def update_task(task_id, new_description):
             print(f"Task {task_id} updated successfully.")
             return
         
-    print(f"Task {task_id} not found.")
+    print(f"Error: Task {task_id} not found. Cannot update.")
     
 def mark_task(task_id, status):
     """Updating the statu of a task(todo, in-progress, done)."""
@@ -81,20 +81,28 @@ def mark_task(task_id, status):
             print(f"Task {task_id} marked as {status}.")
             return
         
-    print(f"Task {task_id} not found.")
+    print(f"Error: Task {task_id} not found. Cannot update status.")
 
 def delete_task(task_id):
-    """Deleting a task using its ID."""
+    """Delete a task by its ID."""
     tasks = load_tasks()
-    updated_tasks = [task for task in tasks if task["id"] != task_id]
     
-    if len(updated_tasks) == len(tasks):
-        print(f"Task {task_id} not found.")
+    if not any(task["id"] == task_id for task in tasks):
+        print(f"Error: Task {task_id} not found. Cannot delete.")
         return
-    
+
+    updated_tasks = [task for task in tasks if task["id"] != task_id]
     save_tasks(updated_tasks)
     print(f"Task {task_id} deleted successfully.")
-    
+
+def clear_tasks():
+    """Delete all tasks from the task file."""
+    confirmation = input("Are you sure you want to delete all tasks? (yes/no): ").strip().lower()
+    if confirmation == "yes":
+        save_tasks([])  # Save an empty list to the file
+        print("All tasks have been deleted successfully.")
+    else:
+        print("Operation canceled.")
     
 def main():
     initialize_tasks_file()
@@ -151,6 +159,8 @@ def main():
                 delete_task(task_id)
             except ValueError:
                 print("Invalid task ID. Please provide a valid task ID.")
+    elif command == "clear":
+        clear_tasks()
     else:
         print("Unknown command")
 
