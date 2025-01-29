@@ -83,6 +83,19 @@ def mark_task(task_id, status):
         
     print(f"Task {task_id} not found.")
 
+def delete_task(task_id):
+    """Deleting a task using its ID."""
+    tasks = load_tasks()
+    updated_tasks = [task for task in tasks if task["id"] != task_id]
+    
+    if len(updated_tasks) == len(tasks):
+        print(f"Task {task_id} not found.")
+        return
+    
+    save_tasks(updated_tasks)
+    print(f"Task {task_id} deleted successfully.")
+    
+    
 def main():
     initialize_tasks_file()
 
@@ -127,6 +140,15 @@ def main():
             try:
                 task_id = int(sys.argv[2])
                 mark_task(task_id, "done")
+            except ValueError:
+                print("Invalid task ID. Please provide a valid task ID.")
+    elif command == "delete":
+        if len(sys.argv) < 3:
+            print("Usage: python task_tracker.py delete <task_id>")
+        else:
+            try:
+                task_id = int(sys.argv[2])
+                delete_task(task_id)
             except ValueError:
                 print("Invalid task ID. Please provide a valid task ID.")
     else:
